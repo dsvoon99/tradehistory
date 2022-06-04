@@ -118,3 +118,7 @@ object prototype:
 1. https://medium.com/backticks-tildes/javascript-prototypes-ee46810e4866
 2. https://medium.com/geekculture/javascript-prototype-f2c451029ec0
 loop through item in react: https://medium.com/how-to-react/different-ways-to-loop-through-arrays-and-objects-in-react-39bcd870ccf
+
+# Git command
+1. Top 20 git commands: https://medium.com/edureka/git-commands-with-example-7c5a555d14c
+2. Update git password: https://stackoverflow.com/questions/20195304/how-do-i-update-the-password-for-git

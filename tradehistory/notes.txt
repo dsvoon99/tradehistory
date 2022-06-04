@@ -1,0 +1,120 @@
+# Nodejs basic tutorial
+https://betterprogramming.pub/build-a-simple-web-server-using-node-js-and-express-27f3d6eb4e86
+
+# Nodejs with react front end
+https://www.freecodecamp.org/news/create-a-react-frontend-a-node-express-backend-and-connect-them-together-c5798926047c/
+https://www.geeksforgeeks.org/how-to-connect-node-js-with-react-js/
+https://medium.com/in-the-weeds/learning-react-with-create-react-app-part-1-a12e1833fdc
+https://medium.com/in-the-weeds/learning-react-with-create-react-app-part-2-3ad99f38b48d
+
+# Using props and states in React
+https://medium.com/@isiagigeofrey0/simple-react-login-form-with-hooks-3f8dc80362ac
+
+# React hooks
+https://medium.com/@ashikaelza/an-introduction-to-react-hooks-67cc9bb5515f
+https://medium.com/makemytrip-engineering/react-hooks-understanding-the-basics-d7f8290f445e
+
+# React routing
+https://medium.com/the-andela-way/understanding-the-fundamentals-of-routing-in-react-b29f806b157e
+https://betterprogramming.pub/a-step-by-step-guide-on-react-router-6-8964c10af364
+
+# React authentication
+https://medium.appbase.io/how-to-implement-authentication-for-your-react-app-cf09eef3bb0b
+
+# UseRef, UseEffect
+- useEffects run after render: https://stackoverflow.com/questions/55424405/does-a-render-happen-before-function-in-react-hooks-useeffect-is-called
+- Ref would always be defined? : https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
+
+# Yarn vs Npm
+https://medium.com/@j.dumadag718/yarn-vs-npm-b2d58289fb9b
+
+# npm install -save
+https://stackoverflow.com/questions/22233684/what-does-npm-install-d-save-mean
+
+# node environmental variable in reactjs
+https://stackoverflow.com/questions/49579028/adding-an-env-file-to-react-project
+https://create-react-app.dev/docs/adding-custom-environment-variables/
+
+# http request using axios
+https://medium.com/@MCapoz/tutorial-how-to-make-http-requests-in-react-part-3-daa6b31b66be
+https://www.educative.io/edpresso/how-to-make-an-axios-post-request
+
+# Node vs nodemon
+https://stackoverflow.com/questions/39052016/what-is-difference-between-node-and-nodemon
+
+# Functional component vs class component
+https://medium.com/scalereal/class-components-vs-functional-components-in-reactjs-8d69595918be
+
+# Npm missing write access
+https://codeforgeek.com/fixing-missing-write-access-error-npm/
+
+# Updating nodejs using npm
+https://stackoverflow.com/questions/8191459/how-do-i-update-node-js
+
+# Asynchronous request
+https://blog.devgenius.io/asynchronous-javascript-practical-explanation-c9613f97f2ca
+
+#### EXPRESSS
+# What does require do in Nodejs
+https://flexiple.com/javascript-require-vs-import/
+
+# Handling cors
+https://medium.com/@charmille_dizon/using-express-session-middleware-and-mongodb-session-store-in-nodejs-for-production-apps-f3754a482237
+
+# Using environmental in express
+https://stackoverflow.com/questions/48605484/environment-variables-env-in-node-js-express
+Precedence of env file: https://stackoverflow.com/questions/49579028/adding-an-env-file-to-react-project
+
+# Using express-session
+https://medium.com/@charmille_dizon/using-express-session-middleware-and-mongodb-session-store-in-nodejs-for-production-apps-f3754a482237
+https://betterprogramming.pub/how-to-manage-sessions-in-node-js-using-passport-redis-and-mysql-a9ac9ecb0708
+https://jonathan-holloway.medium.com/node-and-express-session-a23eb36a052
+https://www.section.io/engineering-education/session-management-in-nodejs-using-expressjs-and-express-session/
+Install redis and start redis-server and redis cli: https://codeforgeek.com/using-redis-to-handle-session-in-node-js/
+Using SQL ORM & Session management (Hash password): https://betterprogramming.pub/how-to-manage-sessions-in-node-js-using-passport-redis-and-mysql-a9ac9ecb0708
+
+# Express-session legacy mode
+https://stackoverflow.com/questions/70219951/typeerror-err-invalid-arg-type-express-sessionredis-error
+https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-homebrew-eb8df9a4f298
+
+# Using body parser
+https://stackoverflow.com/questions/5710358/how-to-access-post-form-fields-in-express
+
+# Module exports
+https://medium.com/@zachgavin/module-exports-and-loading-es5-to-es6-a33ac592989c
+
+#### Mysql/Postgresql database
+Start postgresql in terminal (psql postgres): https://medium.com/@viviennediegoencarnacion/getting-started-with-postgresql-on-mac-e6a5f48ee399
+Solved: psql postgres (No such file or directory): https://stackoverflow.com/questions/42653690/psql-could-not-connect-to-server-no-such-file-or-directory-5432-error
+Command postgresql command: https://www.postgresqltutorial.com/postgresql-administration/psql-commands/
+https://www.tutorialspoint.com/postgresql/postgresql_create_database.htm
+Access a specific database: https://stackoverflow.com/questions/3949876/how-to-switch-databases-in-psql
+Using sequalize: https://levelup.gitconnected.com/the-ultimate-guide-to-get-started-with-sequelize-orm-238588d3516e
+CRUD using sequalize: https://medium.com/techno101/crud-using-node-js-express-and-sequelize-82c10ef3b346
+Customize error message: https://stackoverflow.com/questions/16356856/sequelize-js-custom-validator-check-for-unique-username-password
+
+# Stock price
+https://codesandbox.io/s/qxl2w0qwp?file=/package.json
+https://medium.com/javarevisited/animating-charts-using-d3-3756ed4c0d
+Frontend: https://www.pluralsight.com/guides/using-d3.js-inside-a-react-app
+Frontend: https://blog.griddynamics.com/using-d3-js-with-react-js-an-8-step-comprehensive-manual/
+Frotned: https://www.freecodecamp.org/news/how-to-get-started-with-d3-and-react-c7da74a5bd9f/
+
+# d3 
+Connected scatter plot: https://d3-graph-gallery.com/graph/connectedscatter_basic.html
+d3 format time axis: http://www.d3noob.org/2016/09/formatting-date-time-axis-with.html
+https://teamtreehouse.com/community/change-the-x-axis-labels-to-display-the-full-month-and-year-instead-of-the-abbreviated-month
+Customize axis in d3 (the axis generator): https://ghenshaw-work.medium.com/customizing-axes-in-d3-js-99d58863738b
+d3 v4 reference material: https://github.com/d3/d3-zoom/blob/main/README.md#zoom-transforms
+Zooming a graph in d3: https://d3-graph-gallery.com/graph/interactivity_zoom.html#axisZoom
+d3 zoom translateBy, scaleBy:
+1. https://stackoverflow.com/questions/59198738/d3-scaleby-from-the-left-instead-of-the-center
+2. https://github.com/d3/d3-zoom#zoom_scaleTo
+
+#Extra knowledge
+javascript just in time compilation: https://medium.com/@deeksha621/javascript-just-in-time-compilation-8574cff01082
+.reduce, .map, .filter: https://medium.com/poka-techblog/simplify-your-javascript-use-map-reduce-and-filter-bd02c593cc2d
+object prototype: 
+1. https://medium.com/backticks-tildes/javascript-prototypes-ee46810e4866
+2. https://medium.com/geekculture/javascript-prototype-f2c451029ec0
+loop through item in react: https://medium.com/how-to-react/different-ways-to-loop-through-arrays-and-objects-in-react-39bcd870ccf

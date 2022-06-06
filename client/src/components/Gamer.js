@@ -21,6 +21,8 @@ const Gamer = () => {
 
     const [dataSeries, setDataSeries] = useState([])
 
+    const [buySellLevel, setBuySellLevel] = useState([])
+
     const [ticker, setTicker] = useState("AAPL")
 
     const [cash, setCash] = useState(1000)
@@ -31,6 +33,8 @@ const Gamer = () => {
 
     const [period, setPeriod] = useState(0)
 
+    var gameState = "Stop"
+
     const ref = useRef();
 
     var newX, newY;
@@ -39,7 +43,6 @@ const Gamer = () => {
 
     let startGame = d3.select("#start-game");
     let reviewGame = d3.select("#review-game");
-    let temp = d3.select("#temp");
     let buy = d3.select("#buy");
     let sell = d3.select("#sell");
     let trading = "";
@@ -145,6 +148,8 @@ const Gamer = () => {
                 // setTimer(timer => timer + 1)
             }, 100)
 
+            gameState = "Start"
+
             // programmatically trigger zoom event (can be done either by translateBy, scaleBy etc)
             // zoom.translateBy(chartBody.select("rect"), -1, 0, [30, height - 10]);
         });
@@ -159,6 +164,7 @@ const Gamer = () => {
             //zoom.scaleBy(chartBody.select("rect"), 0, [0, height]);
             clearInterval(interval);
 
+            gameState = "Stop"
             // rescale x axis
 
             // plot/udpate the graphs
@@ -178,16 +184,22 @@ const Gamer = () => {
         });
 
         document.addEventListener("keydown", function(event) {
-            if (event.keyCode == 13) {
-                trading = "Sell"
-                setCash(cash => cash + dataSeries[endI]["close"])
-                setNoOfStocks(noOfStocks => noOfStocks - 1)
-                buySellPoints.push({ "type": "sell", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
-            } else if(event.keyCode == 32) {
-                trading = "Buy"
-                setCash(cash => cash - dataSeries[endI]["close"])
-                setNoOfStocks(noOfStocks => noOfStocks + 1)
-                buySellPoints.push({ "type": "buy", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
+            if(gameState == "Start") {
+                if (event.keyCode == 13) {
+                    trading = "Sell"
+                    setCash(cash => cash + dataSeries[endI]["close"])
+                    setNoOfStocks(noOfStocks => noOfStocks - 1)
+                    buySellPoints.push({ "type": "sell", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
+                    setBuySellLevel(buySellLevel => buySellPoints)
+                } else if(event.keyCode == 32) {
+                    trading = "Buy"
+                    setCash(cash => cash - dataSeries[endI]["close"])
+                    setNoOfStocks(noOfStocks => noOfStocks + 1)
+                    buySellPoints.push({ "type": "buy", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
+                    setBuySellLevel(buySellLevel => buySellPoints)
+                }
+            } else {
+                alert("Start the game first!")
             }
         }, false);
 
@@ -333,25 +345,35 @@ const Gamer = () => {
                             <g className="x-axis"></g>
                             <g className="y-axis"></g>
                         </svg>
+                    </div>
+                    <div className="col-4">
+                        <button id="start-game">Start Game</button>
+                        <button id="review-game">Stop Game</button>
+                        <p>{noOfStocks}</p>
                         <div>
-                            <button id="start-game">Start Game</button>
-                            <button id="review-game">Review Game</button>
-                            <button id="buy">Buy</button>
-                            <button id="sell">Sell</button>
-                            <label id="temp"></label> 
-                            <label id="temp2"></label>
-                            <p>{noOfStocks}</p>
-                            <div>
-                                <p> {period} </p>
-                                <p> TWRR : { ((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 }</p>
-                                Asset { marketValue * noOfStocks + cash }
-                                <p> stock { marketValue * noOfStocks } </p>
-                                <p> cash { cash } </p>
-                                Liabilities/Equities 1000
-                            </div>  
-                            <div>
-                                Transaction record
-                            </div>  
+                            <p> {period} </p>
+                            <p> TWRR : { Math.round(((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 * 100) / 100  } %</p>
+                            Asset { marketValue * noOfStocks + cash }
+                            <p> stock { marketValue * noOfStocks } </p>
+                            <p> cash { cash } </p>
+                            Liabilities/Equities 1000
+                        </div>  
+                        <div>
+                            Transaction record
+                        </div>  
+                        <div>
+                            {
+                                buySellLevel.map(function(sample) {
+                                    return (
+                                        <div>
+                                            {sample.close}
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                        <div>
+                            Instructions
                         </div>
                     </div>
                 </div>

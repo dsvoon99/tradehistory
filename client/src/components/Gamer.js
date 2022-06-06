@@ -23,9 +23,13 @@ const Gamer = () => {
 
     const [ticker, setTicker] = useState("AAPL")
 
-    const [equity, setEquity] = useState(1000)
+    const [cash, setCash] = useState(1000)
 
     const [noOfStocks, setNoOfStocks] = useState(0)
+
+    const [marketValue, setMarketValue] = useState(0)
+
+    const [period, setPeriod] = useState(0)
 
     const ref = useRef();
 
@@ -176,12 +180,12 @@ const Gamer = () => {
         document.addEventListener("keydown", function(event) {
             if (event.keyCode == 13) {
                 trading = "Sell"
-                setEquity(equity => equity + dataSeries[endI]["close"])
+                setCash(cash => cash + dataSeries[endI]["close"])
                 setNoOfStocks(noOfStocks => noOfStocks - 1)
                 buySellPoints.push({ "type": "sell", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
             } else if(event.keyCode == 32) {
                 trading = "Buy"
-                setEquity(equity => equity - dataSeries[endI]["close"])
+                setCash(cash => cash - dataSeries[endI]["close"])
                 setNoOfStocks(noOfStocks => noOfStocks + 1)
                 buySellPoints.push({ "type": "buy", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
             }
@@ -189,8 +193,6 @@ const Gamer = () => {
 
         chartBody.append("g")
         .attr("class", "circle-plot")
-
-
 
         // Set the line animation effect
         // path
@@ -223,8 +225,6 @@ const Gamer = () => {
                 // zoom event by default will adjust the graph in x-direction and y-direction when using rescaleX and rescaleY
                 // Remember zooming is basically as moving the plot area either horizontally or vertically or both
                 newX.y = 0
-
-                console.log(newX.x)
 
                 // Calculate range of y-axis domain
                 startI = dataSeries.length - 1 - Math.floor(((newX.x - 0) / -30000) * dataSeries.length)
@@ -282,6 +282,9 @@ const Gamer = () => {
                     .attr("y1", function(d) { return y(d.close) - 50} )
                     .attr("x2", function(d) { return newX(d.date) } )
                     .attr("y2", function(d) { return y(d.close) + 50 } )
+                    
+                setMarketValue(marketValue => dataSeries[endI]["close"])
+                setPeriod(period => dataSeries[endI]["date"].toDateString())
 
         }
 
@@ -315,8 +318,6 @@ const Gamer = () => {
         renderChart(ref.current)
     }, [dataSeries])
 
-
-
     return (
         <div>
             <div>
@@ -332,16 +333,25 @@ const Gamer = () => {
                             <g className="x-axis"></g>
                             <g className="y-axis"></g>
                         </svg>
-
                         <div>
                             <button id="start-game">Start Game</button>
                             <button id="review-game">Review Game</button>
                             <button id="buy">Buy</button>
                             <button id="sell">Sell</button>
-                            <label id="temp"></label>
+                            <label id="temp"></label> 
                             <label id="temp2"></label>
-                            <p>{equity}</p>
                             <p>{noOfStocks}</p>
+                            <div>
+                                <p> {period} </p>
+                                <p> TWRR : { ((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 }</p>
+                                Asset { marketValue * noOfStocks + cash }
+                                <p> stock { marketValue * noOfStocks } </p>
+                                <p> cash { cash } </p>
+                                Liabilities/Equities 1000
+                            </div>  
+                            <div>
+                                Transaction record
+                            </div>  
                         </div>
                     </div>
                 </div>

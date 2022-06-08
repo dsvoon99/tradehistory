@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import axios from "axios";
 import Strategy from "./Strategy";
 
-const Backtester = () => {
+const Backtester2 = () => {
 
     Array.prototype.hasMax = function(attrib) {
         return this.reduce(function(prev, curr) {
@@ -26,10 +26,6 @@ const Backtester = () => {
 
     var newX, newY;
 
-    var startI, midI, endI;
-
-    var startVal, midVal, endVal;
-
     const renderChart = async (domSVG) => {
         const svg = d3.select(domSVG)
         
@@ -45,6 +41,7 @@ const Backtester = () => {
         .domain(d3.extent(dataSeries, function(d) { return d.date; }))
         .range([ 0, width ])
 
+        console.log(last1Y)
         const offsetX = height - margin.bottom
         const offsetY = 0 - margin.bottom - 10
 
@@ -74,6 +71,7 @@ const Backtester = () => {
 
         svg.select(".x-axis")
         .attr("transform", "translate(" + margin.left +"," + offsetX + ")")
+        // .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b %Y")).ticks(d3.timeFormat.days, 2))
         .call(xAxisGenerator)
 
         svg.select(".y-axis")
@@ -81,7 +79,7 @@ const Backtester = () => {
         .call(d3.axisLeft(y))
 
         var zoom = d3.zoom()
-        .scaleExtent([1, 30])  // This control how much you can unzoom (x0.5) and zoom (x20)
+        .scaleExtent([0.5, 5])  // This control how much you can unzoom (x0.5) and zoom (x20)
         .translateExtent([[0, 0], [width, height]])
         .on("zoom", draw)
         // Add rect cover the zoomed graph and attach zoom event.
@@ -93,7 +91,7 @@ const Backtester = () => {
         .style("pointer-events", "all")
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
         .call(zoom)
-        .on("wheel.zoom", null)
+        .on("wheel.zoom", event => zoomXAxis(event))
         .on("dblclick.zoom", null);
 
         var path = chartBody.append("path")
@@ -154,14 +152,6 @@ const Backtester = () => {
 
         var lastX, lastY;
 
-        function average(arr) {
-            let sum = 0
-            for(let i = 0; i< arr.length; i++) {
-                sum += arr[i]
-            }
-            return sum / arr.length
-        }
-
         function draw() {
                 // recover the new scale
 
@@ -180,52 +170,57 @@ const Backtester = () => {
                     lastY = newX.Y
                     
                     newX.y = 0
+                    newX = newX.rescaleX(x);
 
                     console.log(d3.zoomTransform(node))
                     // newY = d3.zoomTransform(this).rescaleY(y);
-                    startI = dataSeries.length - 1 - Math.floor(((newX.x - 0) / -30000) * dataSeries.length)
-                    endI = Math.floor(startI - (-(width - margin.left)/ -30000) * dataSeries.length)
-                    midI = (startI + endI) / 2
-
-                    startVal = Math.ceil(dataSeries[startI]["close"])
-                    endVal = Math.ceil(dataSeries[endI]["close"])
-
-                    console.log("newX.x", newX.x)
-
-                    // Idea: Only when we zoom in enough: we scale the y-axis accordingly
-
-                    newX = newX.rescaleX(x);
-                    newY = d3.scaleLinear()
-                    .domain([
-                        average([Math.ceil(dataSeries[midI]["close"]), Math.ceil(dataSeries[startI]["close"]), 
-                        Math.ceil(dataSeries[endI]["close"])]) * 0.65, 
-                    average([Math.ceil(dataSeries[midI]["close"]), Math.ceil(dataSeries[startI]["close"]), 
-                    Math.ceil(dataSeries[endI]["close"])]) * 1.45])
-                    .range([ height + offsetY , 0 ])
 
                     // update axes with these new boundaries
+
                     svg.select(".x-axis")
                     .attr("transform", "translate(" + margin.left +"," + offsetX + ")")
+                    // .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b %Y")).ticks(d3.timeFormat.days, 2))
                     .call(d3.axisBottom(newX))
 
-                    
-                        svg.select(".y-axis")
-                        .attr("transform", "translate(" + margin.left +", 10)")
-                        .call(d3.axisLeft(y))   
-                        chartBody.select(".stock-line")
+                    // update circle position
+                    chartBody.select(".stock-line")
                     .attr("stroke-dasharray", 0)
                     .attr("stroke-dashoffset", 0)
                     .attr("d", d3.line()
                         .x(function(d) { return newX(d.date) })
-                        .y(function(d) { return  y(d.close)})
+                        .y(function(d) { return newY != null ? newY(d.close) : y(d.close)})
                         ) 
-
-
-                    // update circle position
                 
+                } else if(temp.attr("class") === "mouse") {
+
+                    newY = d3.zoomTransform(node)
                     
-                    
-                
+                    newY.x = lastX
+
+                    if(newY.k > 1 && (temp2.attr("class") != "scroll-up" && temp2.attr("class") != "scroll-down")) {
+                        newY.k = 1.0
+                    } 
+                    else {
+                        if (temp2.attr("class") === "scroll-down") {
+                            newY.k /= 1.05
+                        } else {
+                            newY.k *= 1.05
+                        }
+                    }
+
+                    newY = newY.rescaleY(y);
+
+                    console.log(d3.zoomTransform(node))
+
+                    svg.select(".y-axis").call(d3.axisLeft(newY))
+
+                    chartBody.select(".stock-line")
+                    .attr("stroke-dasharray", 0)
+                    .attr("stroke-dashoffset", 0)
+                    .attr("d", d3.line()
+                        .x(function(d) { return newX != null ? newX(d.date) : x(d.date)})
+                        .y(function(d) { return newY(d.close)})
+                        ) 
                 } else if (temp.attr("class") === "reset") {
 
                     temp.attr("class", "mouse")
@@ -263,10 +258,29 @@ const Backtester = () => {
 
 
         }
+
+        function zoomXAxis(event) {
+
+            temp.attr("class", "mouse")
+
+            console.log("Hello", event)
+
+            // Detect scroll direction
+            if(event.deltaY > 0) {
+                zoom.scaleBy(chartBody.select("rect"), 1.05, [40, height - 10]);
+                temp2.attr("class", "scroll-up")
+            } else {
+                zoom.scaleBy(chartBody.select("rect"), 0.95, [40, height - 10]);
+                temp2.attr("class", "scroll-down")
+            }
+            // Scale by y-axis from the center
+        }
+
         svg.attr("width", width)
         svg.attr("height", height)
 
-        //zoom.scaleBy(chartBody.select("rect"), 30, [width , 0]);
+        zoom.scaleBy(chartBody.select("rect"), 2, [width - 30, height / 2]);
+        zoom.translateTo(chartBody.select("rect"), width, 0, [width - 30, height / 2]);
 
     }
 
@@ -325,4 +339,4 @@ const Backtester = () => {
     )
 }
 
-export default Backtester;
+export default Backtester2;

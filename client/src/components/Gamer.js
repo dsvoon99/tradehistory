@@ -233,14 +233,16 @@ const Gamer = () => {
                 // Zoom event has x, y and k (relationship: Xn = X(0,0) + kX; Yn = Y(0,0) + kY)
                 newX = d3.zoomTransform(node)
 
+                console.log(newX)
+
                 // Set the y of zoom event to 0 because we only want x-direction to move, leaving y-direction unaffected
                 // zoom event by default will adjust the graph in x-direction and y-direction when using rescaleX and rescaleY
                 // Remember zooming is basically as moving the plot area either horizontally or vertically or both
                 newX.y = 0
 
                 // Calculate range of y-axis domain
-                startI = dataSeries.length - 1 - Math.floor(((newX.x - 0) / -30000) * dataSeries.length)
-                endI = Math.floor(startI - (-(width - margin.left)/ -30000) * dataSeries.length)
+                startI = dataSeries.length - 1 - Math.floor(((-newX.x) / (width * newX.k)) * dataSeries.length)
+                endI = Math.floor(startI - ((width - margin.left)/(width * newX.k)) * dataSeries.length)
                 midI = (startI + endI) / 2
 
                 // clear interval

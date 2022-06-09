@@ -183,49 +183,64 @@ const Backtester = () => {
 
                     console.log(d3.zoomTransform(node))
                     // newY = d3.zoomTransform(this).rescaleY(y);
-                    startI = dataSeries.length - 1 - Math.floor(((newX.x - 0) / -30000) * dataSeries.length)
-                    endI = Math.floor(startI - (-(width - margin.left)/ -30000) * dataSeries.length)
-                    midI = (startI + endI) / 2
+                    startI =  dataSeries.length - Math.floor(((-newX.x)/ (width * newX.k)) * dataSeries.length)
+                    endI = Math.floor(startI - (((width - margin.left)/ (width * newX.k))) * dataSeries.length)
+
+                    console.log("index", startI, endI)
+
+                    midI = Math.floor((startI + endI) / 2)
 
                     startVal = Math.ceil(dataSeries[startI]["close"])
                     endVal = Math.ceil(dataSeries[endI]["close"])
 
-                    console.log("newX.x", newX.x)
-
-                    // Idea: Only when we zoom in enough: we scale the y-axis accordingly
+                    // console.log("newX.x", newX.x)
+                    // console.log("newX.k", newX.k)
+                    console.log("index", Math.ceil(dataSeries[startI]["close"]), Math.ceil(dataSeries[midI]["close"]), Math.ceil(dataSeries[endI]["close"]))
 
                     newX = newX.rescaleX(x);
                     newY = d3.scaleLinear()
                     .domain([
-                        average([Math.ceil(dataSeries[midI]["close"]), Math.ceil(dataSeries[startI]["close"]), 
-                        Math.ceil(dataSeries[endI]["close"])]) * 0.65, 
-                    average([Math.ceil(dataSeries[midI]["close"]), Math.ceil(dataSeries[startI]["close"]), 
-                    Math.ceil(dataSeries[endI]["close"])]) * 1.45])
+                        average([Math.ceil(dataSeries[startI]["close"]), Math.ceil(dataSeries[startI]["close"]), 
+                        Math.ceil(dataSeries[startI]["close"])]) * 0.65, 
+                    average([Math.ceil(dataSeries[endI]["close"]), Math.ceil(dataSeries[endI]["close"]), 
+                    Math.ceil(dataSeries[endI]["close"])]) * 1.5])
                     .range([ height + offsetY , 0 ])
 
                     // update axes with these new boundaries
                     svg.select(".x-axis")
                     .attr("transform", "translate(" + margin.left +"," + offsetX + ")")
                     .call(d3.axisBottom(newX))
-
                     
+                    // console.log("newX.k", newX.k)
+                    // // Idea: Only when we zoom in enough: we scale the y-axis accordingly
+                    // if(d3.zoomTransform(node).k > 5) {
+                    //     console.log("Hi")
+                    //     svg.select(".y-axis")
+                    //     .attr("transform", "translate(" + margin.left +", 10)")
+                    //     .call(d3.axisLeft(newY))   
+                    //     chartBody.select(".stock-line")
+                    //     .attr("stroke-dasharray", 0)
+                    //     .attr("stroke-dashoffset", 0)
+                    //     .attr("d", d3.line()
+                    //     .x(function(d) { return newX(d.date) })
+                    //     .y(function(d) { return newY(d.close)})
+                    //     ) 
+
+                    // } else {
+                        console.log("Hi < 5")
                         svg.select(".y-axis")
                         .attr("transform", "translate(" + margin.left +", 10)")
-                        .call(d3.axisLeft(y))   
+                        .call(d3.axisLeft(newY))   
                         chartBody.select(".stock-line")
-                    .attr("stroke-dasharray", 0)
-                    .attr("stroke-dashoffset", 0)
-                    .attr("d", d3.line()
+                        .attr("stroke-dasharray", 0)
+                        .attr("stroke-dashoffset", 0)
+                        .attr("d", d3.line()
                         .x(function(d) { return newX(d.date) })
-                        .y(function(d) { return  y(d.close)})
+                        .y(function(d) { return  newY(d.close)})
                         ) 
 
+                    // }
 
-                    // update circle position
-                
-                    
-                    
-                
                 } else if (temp.attr("class") === "reset") {
 
                     temp.attr("class", "mouse")

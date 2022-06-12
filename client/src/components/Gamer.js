@@ -63,7 +63,7 @@ const Gamer = () => {
         // Define the characteristic/feature of axis x
         var x = d3.scaleTime()
         .domain(d3.extent(dataSeries, function(d) { return d.date; }))
-        .range([ 0, width ])
+        .range([ 0, width - margin.right])
 
         const offsetX = height - margin.bottom
         const offsetY = 0 - margin.bottom - 10
@@ -165,9 +165,6 @@ const Gamer = () => {
             clearInterval(interval);
 
             gameState = "Stop"
-            // rescale x axis
-
-            // plot/udpate the graphs
         });
 
         buy.on("click", function() {

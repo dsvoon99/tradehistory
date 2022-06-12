@@ -15,30 +15,34 @@ const Backtester = () => {
 
     const [ticker, setTicker] = useState("AAPL")
 
-    const [xDomain, setXDomain] = useState([])
-
     const ref = useRef();
 
     var newX, newY;
 
     var startI, midI, midI1, midI2, endI;
 
-    var startVal, midVal, endVal;
+    var startVal, endVal;
 
     const renderChart = async (domSVG) => {
         const svg = d3.select(domSVG)
+
+        svg.selectAll("*").remove();
+
+        // Clear the chart
+        var xAxis = svg.append("g")
+        xAxis.attr("class", "x-axis")
+
+        var yAxis = svg.append("g")
+        yAxis.attr("class", "y-axis")
         
         const height = 500;
         const width = 1000;
         const margin = { top: 20, right: 30, bottom: 30, left: 40 };
 
-        let today = new Date(new Date().setFullYear(new Date().getFullYear() - 1))
-        let last1Y = dataSeries.slice(0, 365)
-    
         // Define the characteristic/feature of axis x
         var x = d3.scaleTime()
         .domain(d3.extent(dataSeries, function(d) { return d.date; }))
-        .range([ 0, width ])
+        .range([ 0, width - margin.right])
 
         const offsetX = height - margin.bottom
         const offsetY = 0 - margin.bottom - 10
@@ -144,7 +148,6 @@ const Backtester = () => {
             .attr("stroke-dashoffset", totalLength * 2)
         
         let temp = d3.select("#temp")
-        let temp2 = d3.select("#temp2")
 
         var lastX, lastY;
 
@@ -161,8 +164,6 @@ const Backtester = () => {
                 var node = this;
 
                 if (temp.attr("class") === "button") {
-
-                    temp2.attr("class", "")
                     
                     newX = d3.zoomTransform(node)
 
@@ -171,32 +172,27 @@ const Backtester = () => {
                     
                     newX.y = 0
 
-                    console.log(d3.zoomTransform(node))
-                    // newY = d3.zoomTransform(this).rescaleY(y);
                     startI =  dataSeries.length - Math.floor(((-newX.x)/ (width * newX.k)) * dataSeries.length) - 1
                     endI = Math.floor(startI - (((width - margin.left)/ (width * newX.k))) * dataSeries.length)
                     midI = Math.floor((startI + endI) / 2)
                     midI1 = Math.floor((startI + midI)/2)
                     midI2 = Math.floor((endI + midI)/2)
 
-                    console.log("index", startI, endI)
-
                     startVal = dataSeries[startI]["close"]
                     endVal = dataSeries[endI]["close"]
-
-                    console.log("value", startVal, endVal)
 
                     if (endVal > startVal) {
                         newY = d3.scaleLinear()
                         .domain([
-                            Math.ceil(dataSeries[startI]["close"] < 1 ? 0 : average([Math.ceil(dataSeries[startI]["close"]), Math.ceil(dataSeries[midI1]["close"])]) * 0.55, 
-                            average([Math.ceil(dataSeries[endI]["close"]), Math.ceil(dataSeries[midI2]["close"])]) * 1.3])  
+                            dataSeries[startI]["close"] < 1 ? 0 : average([Math.ceil(dataSeries[startI]["close"]), Math.ceil(dataSeries[midI1]["close"])]) * 0.55, 
+                            average([Math.ceil(dataSeries[endI]["close"]), Math.ceil(dataSeries[midI2]["close"])]) * 1.3
+                        ])
                         .range([ height + offsetY , 0 ])
                     } else {
                         newY = d3.scaleLinear()
                         .domain([
-                            Math.ceil(dataSeries[startI]["close"] < 1 ? 0 : average([Math.ceil(dataSeries[endI]["close"]), Math.ceil(dataSeries[midI2]["close"])]) * 0.55,
-                            average([Math.ceil(dataSeries[startI]["close"]), Math.ceil(dataSeries[midI1]["close"])]) * 1.3, 
+                            dataSeries[startI]["close"] < 1 ? 0 : average([Math.ceil(dataSeries[endI]["close"]), Math.ceil(dataSeries[midI2]["close"])]) * 0.55,
+                            average([Math.ceil(dataSeries[startI]["close"]), Math.ceil(dataSeries[midI1]["close"])]) * 1.3
                         ])  
                         .range([ height + offsetY , 0 ])
                         
@@ -220,8 +216,6 @@ const Backtester = () => {
                         .y(function(d) { return  newY(d.close)})
                     ) 
 
-                    // }
-
                 } else if (temp.attr("class") === "reset") {
 
                     // update axes with these new boundaries
@@ -238,8 +232,6 @@ const Backtester = () => {
 
                     newY = null;
                     newX = null;
-
-                    temp2.attr("class", "scroll-down")
 
                     // update circle position
                     chartBody.select(".stock-line")
@@ -288,9 +280,6 @@ const Backtester = () => {
                 <div className="row">
                     <div className="col-8">
                         <svg ref={ref}>
-                            <g></g>
-                            <g className="x-axis"></g>
-                            <g className="y-axis"></g>
                         </svg>
                         <div>
                             <button id="zoom_in">Zoom in</button>
@@ -299,7 +288,6 @@ const Backtester = () => {
                             <button id="right">toRight</button>
                             <button id="reset">Reset Zoom</button>
                             <label id="temp"></label>
-                            <label id="temp2"></label>
                         </div>
                     </div>
                     <div className="col-4">

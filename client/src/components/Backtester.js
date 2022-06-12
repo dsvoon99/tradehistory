@@ -3,18 +3,13 @@ import * as d3 from "d3";
 import axios from "axios";
 import Strategy from "./Strategy";
 
+Array.prototype.hasMax = function(attrib) {
+    return this.reduce(function(prev, curr) {
+        return prev[attrib] < curr[attrib] ? curr : prev;
+    });
+};
+
 const Backtester = () => {
-
-    Array.prototype.hasMax = function(attrib) {
-        return this.reduce(function(prev, curr) {
-            return prev[attrib] < curr[attrib] ? curr : prev;
-        });
-    };
-
-    Array.prototype.calcAverage = function(attrib) {
-        const total =  this.reduce((prev, curr) =>  prev[attrib] + curr[attrib], 0)
-        return total;
-    };
 
     const [dataSeries, setDataSeries] = useState([])
 
@@ -26,7 +21,7 @@ const Backtester = () => {
 
     var newX, newY;
 
-    var startI, midI, endI;
+    var startI, midI, midI1, midI2, endI;
 
     var startVal, midVal, endVal;
 
@@ -69,8 +64,7 @@ const Backtester = () => {
         // .axisBottom() will create the axis object using the feature defined
         // define axis generator
         let xAxisGenerator = d3.axisBottom(x)
-        xAxisGenerator.tickFormat(d3.timeFormat("%b"))
-        xAxisGenerator.ticks(30)
+        xAxisGenerator.tickFormat(d3.timeFormat("%b %Y"))
 
         svg.select(".x-axis")
         .attr("transform", "translate(" + margin.left +"," + offsetX + ")")
@@ -128,12 +122,12 @@ const Backtester = () => {
 
         toLeft.on("click", function() {
             temp.attr("class", "button")
-            zoom.translateBy(chartBody.select("rect"), 50, 0);
+            zoom.translateBy(chartBody.select("rect"), 10, 0);
         });
 
         toRight.on("click", function() {
             temp.attr("class", "button")
-            zoom.translateBy(chartBody.select("rect"), -50, 0);
+            zoom.translateBy(chartBody.select("rect"), -10, 0);
         });
 
         reset.on("click", function() {
@@ -164,13 +158,9 @@ const Backtester = () => {
 
         function draw() {
                 // recover the new scale
-
                 var node = this;
-                console.log(temp.attr("class"))
 
                 if (temp.attr("class") === "button") {
-
-                    temp.attr("class", "mouse")
 
                     temp2.attr("class", "")
                     
@@ -183,74 +173,60 @@ const Backtester = () => {
 
                     console.log(d3.zoomTransform(node))
                     // newY = d3.zoomTransform(this).rescaleY(y);
-                    startI =  dataSeries.length - Math.floor(((-newX.x)/ (width * newX.k)) * dataSeries.length)
+                    startI =  dataSeries.length - Math.floor(((-newX.x)/ (width * newX.k)) * dataSeries.length) - 1
                     endI = Math.floor(startI - (((width - margin.left)/ (width * newX.k))) * dataSeries.length)
+                    midI = Math.floor((startI + endI) / 2)
+                    midI1 = Math.floor((startI + midI)/2)
+                    midI2 = Math.floor((endI + midI)/2)
 
                     console.log("index", startI, endI)
 
-                    midI = Math.floor((startI + endI) / 2)
+                    startVal = dataSeries[startI]["close"]
+                    endVal = dataSeries[endI]["close"]
 
-                    startVal = Math.ceil(dataSeries[startI]["close"])
-                    endVal = Math.ceil(dataSeries[endI]["close"])
+                    console.log("value", startVal, endVal)
 
-                    // console.log("newX.x", newX.x)
-                    // console.log("newX.k", newX.k)
-                    console.log("index", Math.ceil(dataSeries[startI]["close"]), Math.ceil(dataSeries[midI]["close"]), Math.ceil(dataSeries[endI]["close"]))
+                    if (endVal > startVal) {
+                        newY = d3.scaleLinear()
+                        .domain([
+                            Math.ceil(dataSeries[startI]["close"] < 1 ? 0 : average([Math.ceil(dataSeries[startI]["close"]), Math.ceil(dataSeries[midI1]["close"])]) * 0.55, 
+                            average([Math.ceil(dataSeries[endI]["close"]), Math.ceil(dataSeries[midI2]["close"])]) * 1.3])  
+                        .range([ height + offsetY , 0 ])
+                    } else {
+                        newY = d3.scaleLinear()
+                        .domain([
+                            Math.ceil(dataSeries[startI]["close"] < 1 ? 0 : average([Math.ceil(dataSeries[endI]["close"]), Math.ceil(dataSeries[midI2]["close"])]) * 0.55,
+                            average([Math.ceil(dataSeries[startI]["close"]), Math.ceil(dataSeries[midI1]["close"])]) * 1.3, 
+                        ])  
+                        .range([ height + offsetY , 0 ])
+                        
+                    }
 
                     newX = newX.rescaleX(x);
-                    newY = d3.scaleLinear()
-                    .domain([
-                        average([Math.ceil(dataSeries[startI]["close"]), Math.ceil(dataSeries[startI]["close"]), 
-                        Math.ceil(dataSeries[startI]["close"])]) * 0.65, 
-                    average([Math.ceil(dataSeries[endI]["close"]), Math.ceil(dataSeries[endI]["close"]), 
-                    Math.ceil(dataSeries[endI]["close"])]) * 1.5])
-                    .range([ height + offsetY , 0 ])
 
                     // update axes with these new boundaries
                     svg.select(".x-axis")
                     .attr("transform", "translate(" + margin.left +"," + offsetX + ")")
                     .call(d3.axisBottom(newX))
                     
-                    // console.log("newX.k", newX.k)
-                    // // Idea: Only when we zoom in enough: we scale the y-axis accordingly
-                    // if(d3.zoomTransform(node).k > 5) {
-                    //     console.log("Hi")
-                    //     svg.select(".y-axis")
-                    //     .attr("transform", "translate(" + margin.left +", 10)")
-                    //     .call(d3.axisLeft(newY))   
-                    //     chartBody.select(".stock-line")
-                    //     .attr("stroke-dasharray", 0)
-                    //     .attr("stroke-dashoffset", 0)
-                    //     .attr("d", d3.line()
-                    //     .x(function(d) { return newX(d.date) })
-                    //     .y(function(d) { return newY(d.close)})
-                    //     ) 
-
-                    // } else {
-                        console.log("Hi < 5")
-                        svg.select(".y-axis")
-                        .attr("transform", "translate(" + margin.left +", 10)")
-                        .call(d3.axisLeft(newY))   
-                        chartBody.select(".stock-line")
-                        .attr("stroke-dasharray", 0)
-                        .attr("stroke-dashoffset", 0)
-                        .attr("d", d3.line()
+                    svg.select(".y-axis")
+                    .attr("transform", "translate(" + margin.left +", 10)")
+                    .call(d3.axisLeft(newY))   
+                    chartBody.select(".stock-line")
+                    .attr("stroke-dasharray", 0)
+                    .attr("stroke-dashoffset", 0)
+                    .attr("d", d3.line()
                         .x(function(d) { return newX(d.date) })
                         .y(function(d) { return  newY(d.close)})
-                        ) 
+                    ) 
 
                     // }
 
                 } else if (temp.attr("class") === "reset") {
 
-                    temp.attr("class", "mouse")
-                    
-                    // newY = d3.zoomTransform(this).rescaleY(y);
-
                     // update axes with these new boundaries
                     svg.select(".x-axis")
                     .attr("transform", "translate(" + margin.left +"," + offsetX + ")")
-                    // .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b %Y")).ticks(d3.timeFormat.days, 2))
                     .call(xAxisGenerator)
 
                     svg.select(".y-axis")
@@ -273,15 +249,10 @@ const Backtester = () => {
                         .x(function(d) { return x(d.date) })
                         .y(function(d) { return y(d.close)})
                         ) 
-
                 }
-
-
         }
         svg.attr("width", width)
         svg.attr("height", height)
-
-        //zoom.scaleBy(chartBody.select("rect"), 30, [width , 0]);
 
     }
 

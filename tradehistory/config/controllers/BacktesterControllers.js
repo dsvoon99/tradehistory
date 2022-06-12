@@ -6,8 +6,8 @@ const getChart =  (req, res) => {
 
     yahooFinance.historical({
         symbol: ticker,
-        from: '2010-01-01',
-        to: '2022-04-30',
+        from: '1900-01-01',
+        to: new Date(),
         period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only)
       }, function (err, quotes) {
         if(err) {

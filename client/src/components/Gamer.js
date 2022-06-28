@@ -238,9 +238,11 @@ const Gamer = () => {
                 newX.y = 0
 
                 // Calculate range of y-axis domain
-                startI = dataSeries.length - 1 - Math.floor(((-newX.x) / (width * newX.k)) * dataSeries.length)
-                endI = Math.floor(startI - ((width - margin.left)/(width * newX.k)) * dataSeries.length)
-                midI = (startI + endI) / 2
+                startI = dataSeries.length - 1 - Math.floor(((newX.x) / -29000) * dataSeries.length)
+                endI = Math.floor(startI - (-(width)/ -29000) * dataSeries.length)
+                midI = Math.floor((startI + endI) / 2)
+
+                console.log(startI, endI, midI, dataSeries.length)
 
                 // clear interval
                 if(endI < 0) {

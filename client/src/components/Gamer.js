@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
 import axios from "axios";
-import Strategy from "./Strategy";
+import '../Gamer.css';
 
 const Gamer = () => {
 
@@ -332,7 +332,7 @@ const Gamer = () => {
     }, [dataSeries])
 
     return (
-        <section id="Game" className="container">
+        <div id="game-wrapper" className="container pt-5">
             <div>
                 <label>Ticker: </label>
                 <input value={ticker} onChange={event => setTicker(event.target.value)}/>
@@ -379,7 +379,7 @@ const Gamer = () => {
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     )
 }
 

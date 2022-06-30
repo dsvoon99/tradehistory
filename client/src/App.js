@@ -18,8 +18,12 @@ const App = () => {
           <Route exact path="/signup" element={<RegisterForm />} />
           <Route exact path="/gamerlanding" element={<GamerLandingPage />} />
         </Routes> */}
-        <GamerLandingPage />
-        <Gamer/>
+        <section id='Home'>
+          <GamerLandingPage />
+        </section>
+        <section id='Game'>
+          <Gamer/>
+        </section>
       </div>
     </div>
     )

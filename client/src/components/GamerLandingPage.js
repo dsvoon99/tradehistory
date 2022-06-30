@@ -1,4 +1,4 @@
-import '../GamerLandingPage.css';
+import '../assets/styles/GamerLandingPage.css';
 
 const GamerLandingPage = () => {
 
@@ -35,7 +35,7 @@ const GamerLandingPage = () => {
                     </div>
                 </div>
                 <div className="col-8">
-                    <img src={require('../assets/banner-1.jpg')} className="landing-banner"/>
+                    <img src={require('../assets/images/banner-1.jpg')} className="landing-banner"/>
                 </div>
             </div>
         </div>

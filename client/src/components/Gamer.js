@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
 import axios from "axios";
-import '../Gamer.css';
+import '../assets/styles/Gamer.css';
 
 const Gamer = () => {
 

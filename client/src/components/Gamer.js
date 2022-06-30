@@ -332,7 +332,7 @@ const Gamer = () => {
     }, [dataSeries])
 
     return (
-        <div>
+        <section id="Game" className="container">
             <div>
                 <label>Ticker: </label>
                 <input value={ticker} onChange={event => setTicker(event.target.value)}/>
@@ -379,7 +379,7 @@ const Gamer = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 

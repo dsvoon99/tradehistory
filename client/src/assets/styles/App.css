@@ -1,0 +1,9 @@
+.App {
+    background: #ffffff;
+    overflow-x: hidden;
+}
+
+.body-pd {
+    padding-left: 10rem;
+    padding-right: 10rem;
+}

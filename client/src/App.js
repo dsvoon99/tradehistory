@@ -5,12 +5,14 @@ import Backtester from './components/Backtester';
 import Gamer from './components/Gamer';
 import GamerLandingPage from './components/GamerLandingPage';
 import Navbar from './components/Navbar';
+import About from './components/About';
+import "./assets/styles/App.css"
 
 const App = () => {
   return (
-    <div>
+    <div className='App'>
       <Navbar/>
-      <div className='pt-5'>
+      <div className='body-content'>
         {/* <Routes>
           <Route exact path="" element={<Backtester />} />
           <Route exact path="/gamer" element={<Gamer />} />
@@ -20,6 +22,9 @@ const App = () => {
         </Routes> */}
         <section id='Home'>
           <GamerLandingPage />
+        </section>
+        <section id='About'>
+          <About/>
         </section>
         <section id='Game'>
           <Gamer/>

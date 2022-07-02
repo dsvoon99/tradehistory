@@ -332,7 +332,7 @@ const Gamer = () => {
     }, [dataSeries])
 
     return (
-        <div id="game-wrapper" className="container pt-5">
+        <div id="game-wrapper" className="body-pd">
             <div>
                 <label>Ticker: </label>
                 <input value={ticker} onChange={event => setTicker(event.target.value)}/>

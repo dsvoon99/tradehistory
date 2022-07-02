@@ -1,3 +1,4 @@
 #game-wrapper {
-    height: 800px;
+    height: 100vh;
+    padding-top: 5rem;
 }

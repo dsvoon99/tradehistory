@@ -1,40 +1,55 @@
- @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+ .gamer-landing-page {
+    height: 80vh;
+    background: #ffffff;
+    padding-top: 4rem;
+ }
+
+ .spacer {
+    height: 3.75rem;
+ }
+ 
  .landing-h1 {
     font-size: 4rem;
     margin: 0;
+    font-family: 'League Spartan', sans-serif;
  }
 
  .landing-p {
-    font-size: 0.8rem;
+    font-size: 1.2rem;
+    font-family: 'League Spartan', sans-serif;
  }
 
 
 .landing-btn {
     background-color: #3f8dfb;
     color: #ffffff;
-    font-size: 0.8rem;
+    font-size: 1rem;
     border: none;
-    box-shadow:
-    1.9px 2.2px 2.2px rgba(0, 0, 0, 0.02),
-    4.5px 5.2px 5.3px rgba(0, 0, 0, 0.028),
-    8.4px 9.8px 10px rgba(0, 0, 0, 0.035),
-    15px 17.4px 17.9px rgba(0, 0, 0, 0.042),
-    28px 32.6px 33.4px rgba(0, 0, 0, 0.05),
-    67px 78px 80px rgba(0, 0, 0, 0.07)
-    ;
+    box-shadow: 10px 10px 23px -7px rgba(0,0,0,0.5);
     width: 10rem;
     display: flex;
 	flex-direction: row;
     align-items: center;
     justify-content: center;
     padding: 0.75rem 1.2rem;
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'League Spartan', sans-serif;
   }
 
   .landing-banner {
+      border-radius: 20px;
       width: 100%;
   }
+
+  .banner-1 {
+    border-radius: 20px;
+    background: #ebebeb;
+    box-shadow:  13px 13px 26px #c8c8c8,
+             -13px -13px 26px #ffffff;
+  }
+
+
 
 
   

@@ -1,0 +1,37 @@
+.li-style-none {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    font-family: 'League Spartan', sans-serif;
+    font-size: 1.2rem;
+}
+
+.nav-bar {
+    height: 3.75rem;
+    background-color: #f5f4f9;
+    border-bottom: 1px #f5f4f9 solid;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: 0px 1px 13px -4px rgba(0,0,0,0.75);
+}
+
+.nav-bar ul {
+    height: 100%;
+}
+
+.nav-logo {
+    width: 15rem;
+    font-family: 'League Spartan', sans-serif;
+    font-size: 1.5rem;
+}
+
+.nav-item {
+    width: 8rem;
+}
+
+.nav-item a:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+}

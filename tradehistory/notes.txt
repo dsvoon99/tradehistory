@@ -21,6 +21,21 @@ https://betterprogramming.pub/a-step-by-step-guide-on-react-router-6-8964c10af36
 # React Navbar
 https://medium.com/swlh/responsive-navbar-using-react-bootstrap-5e0e0bd33bd6
 
+# React scroll
+https://dr-lucasleibs.medium.com/react-app-smooth-scroll-with-react-scroll-4f97a817fcad
+
+#Sticky navbar
+https://www.youtube.com/watch?v=tioN7eYXDR0 
+Example: https://icebarrel.com/the-benefits-of-a-cold-shower/
+When scroll down => When exceed certain scroll pixels => Navbar disappear
+When scroll up => Navbar appear
+
+# React design
+https://dribbble.com/shots/18620158-BNPL-Card-Landing-Page
+
+# Neumorphism color
+https://neumorphism.io/#ebebeb
+
 # React authentication
 https://medium.appbase.io/how-to-implement-authentication-for-your-react-app-cf09eef3bb0b
 

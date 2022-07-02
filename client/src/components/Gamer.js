@@ -19,6 +19,21 @@ const Gamer = () => {
         return sum / (endIndex - startIndex)
     };
 
+    const stocksArray = [
+        {
+            "name": "S&P 500",
+            "code": "SPX500"
+        }, 
+        {
+            "name": "Apple Inc",
+            "code": "APPL"
+        },
+        {
+            "name": "Tesla Inc",
+            "code": "TSLA"
+        }
+    ]
+
     const [dataSeries, setDataSeries] = useState([])
 
     const [buySellLevel, setBuySellLevel] = useState([])
@@ -331,8 +346,21 @@ const Gamer = () => {
         renderChart(ref.current)
     }, [dataSeries])
 
+
     return (
         <div id="game-wrapper" className="body-pd">
+            <div className="d-flex flex-row">
+                {
+                    
+                    stocksArray.map(function(item) {
+                        return (
+                                <div>{item.name}</div>
+                        )
+                    })
+
+                }
+                
+            </div>
             <div>
                 <label>Ticker: </label>
                 <input value={ticker} onChange={event => setTicker(event.target.value)}/>

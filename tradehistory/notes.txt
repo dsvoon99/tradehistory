@@ -24,6 +24,9 @@ https://medium.com/swlh/responsive-navbar-using-react-bootstrap-5e0e0bd33bd6
 # React scroll
 https://dr-lucasleibs.medium.com/react-app-smooth-scroll-with-react-scroll-4f97a817fcad
 
+#CSS positioning
+https://css-tricks.com/absolute-relative-fixed-positioining-how-do-they-differ/
+
 #Sticky navbar
 https://www.youtube.com/watch?v=tioN7eYXDR0 
 Example: https://icebarrel.com/the-benefits-of-a-cold-shower/

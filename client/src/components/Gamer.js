@@ -354,7 +354,30 @@ const Gamer = () => {
                     
                     stocksArray.map(function(item) {
                         return (
-                                <div>{item.name}</div>
+                                <div className="stocks-card">
+                                    <div>Logo</div>
+                                    <div>
+                                        <div>
+                                            {item.name}
+                                        </div>
+                                        <div>
+                                            {item.code}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            $800
+                                        </div>
+                                        <div>
+                                            <label>
+                                                +5.34%
+                                            </label>
+                                            <label>
+                                                +5.34%
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                         )
                     })
 
@@ -394,7 +417,7 @@ const Gamer = () => {
                             {
                                 buySellLevel.map(function(sample) {
                                     return (
-                                        <div>
+                                        <div >
                                             {sample.close}
                                         </div>
                                     )

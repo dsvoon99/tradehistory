@@ -22,7 +22,7 @@ const Gamer = () => {
     const stocksArray = [
         {
             "name": "S&P 500",
-            "code": "SPX500"
+            "code": "SPDR500"
         }, 
         {
             "name": "Apple Inc",
@@ -31,6 +31,18 @@ const Gamer = () => {
         {
             "name": "Tesla Inc",
             "code": "TSLA"
+        },
+        {
+            "name": "Shopify Inc",
+            "code": "SHOP"
+        },
+        {
+            "name": "Advanced Micro Devices, Inc",
+            "code": "AMD"
+        },
+        {
+            "name": "Walmart Inc",
+            "code": "WMT"
         }
     ]
 
@@ -341,36 +353,39 @@ const Gamer = () => {
         })
     }
 
+
+    // get latest data
     // Additional function after re-rendering put here
     useEffect(() => {
         renderChart(ref.current)
     }, [dataSeries])
 
-
     return (
         <div id="game-wrapper" className="body-pd">
-            <div className="d-flex flex-row">
+            <div className="">
                 {
                     
                     stocksArray.map(function(item) {
                         return (
-                                <div className="stocks-card">
-                                    <div>Logo</div>
-                                    <div>
+                                <div className="stocks-card d-flex flex-row">
+                                    <div className="stocks-card-logo">
+                                        <img src={`/icons/${item.code}.png`} className="stocks-card-logo-image"/>
+                                    </div>
+                                    <div className="stocks-card-name">
                                         <div>
                                             {item.name}
                                         </div>
                                         <div>
                                             {item.code}
-                                        </div>
+                                        </div> 
                                     </div>
-                                    <div>
+                                    <div className="stocks-card-today d-flex flex-column align-items-center">
                                         <div>
                                             $800
                                         </div>
-                                        <div>
+                                        <div className="d-flex flex-row justify-content-center">
                                             <label>
-                                                +5.34%
+                                                <span class="material-icons icon-green">trending_up</span>
                                             </label>
                                             <label>
                                                 +5.34%

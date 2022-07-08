@@ -2,3 +2,34 @@
     height: 100vh;
     padding-top: 5rem;
 }
+
+.icon-green {
+    color: #69cd6d;
+}
+
+.icon-red {
+    color: red;
+}
+
+.stocks-card {
+    width: 300px;
+    height: 80px;
+}
+
+.stocks-card-name {
+    width: 70%;
+}
+
+.stocks-card-today {
+    width: 20%;
+}
+
+.stocks-card-logo {
+    width: 30%;
+    padding: 0 10px;
+}
+
+.stocks-card-logo-image {
+    width: 50px;
+    border-radius: 50%;
+}

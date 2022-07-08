@@ -2,6 +2,9 @@ import { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
 import axios from "axios";
 import '../assets/styles/Gamer.css';
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 const Gamer = () => {
 
@@ -362,12 +365,13 @@ const Gamer = () => {
 
     return (
         <div id="game-wrapper" className="body-pd">
-            <div className="">
+            <OwlCarousel className='owl-theme' loop margin={10} items={5} 
+            autoplay={true} dots={false} autoplayTimeout={3000}>
                 {
                     
                     stocksArray.map(function(item) {
                         return (
-                                <div className="stocks-card d-flex flex-row">
+                                <div className="stocks-card d-flex flex-row align-items-center">
                                     <div className="stocks-card-logo">
                                         <img src={`/icons/${item.code}.png`} className="stocks-card-logo-image"/>
                                     </div>
@@ -396,9 +400,8 @@ const Gamer = () => {
                         )
                     })
 
-                }
-                
-            </div>
+                }    
+            </OwlCarousel>
             <div>
                 <label>Ticker: </label>
                 <input value={ticker} onChange={event => setTicker(event.target.value)}/>

@@ -74,6 +74,9 @@ https://codeforgeek.com/fixing-missing-write-access-error-npm/
 # Updating nodejs using npm
 https://stackoverflow.com/questions/8191459/how-do-i-update-node-js
 
+# Importing image in reactjs
+https://medium.com/react-courses/5-top-methods-to-import-and-load-images-dynamically-on-cra-react-local-production-build-855d3ba3e704
+
 # Asynchronous request
 https://blog.devgenius.io/asynchronous-javascript-practical-explanation-c9613f97f2ca
 

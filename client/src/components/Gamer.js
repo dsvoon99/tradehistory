@@ -438,11 +438,13 @@ const Gamer = () => {
                         <div>
                             <p> {period} </p>
                         </div>
-                        <div>
+                        <div className="no-of-stocks-card">
                             No. of {ticker} stock holdings: {noOfStocks}
                         </div>
-                        <div>
+                        <div className="twrr-card">
                             <p> TWRR : { Math.round(((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 * 100) / 100  } %</p>
+                        </div>
+                        <div className="performance-graphs-card">
                             <p>
                                 MV of stocks
                             </p>
@@ -450,7 +452,7 @@ const Gamer = () => {
                             <p> cash { cash } </p>
                             Total Asset { marketValue * noOfStocks + cash }
                         </div> 
-                        <div>
+                        <div className="instructions-card">
                             Instructions
                         </div>
                     </div>

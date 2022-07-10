@@ -146,6 +146,7 @@ object prototype:
 1. https://medium.com/backticks-tildes/javascript-prototypes-ee46810e4866
 2. https://medium.com/geekculture/javascript-prototype-f2c451029ec0
 loop through item in react: https://medium.com/how-to-react/different-ways-to-loop-through-arrays-and-objects-in-react-39bcd870ccf
+3. meaning of width 100%: https://www.impressivewebs.com/width-100-percent-css/
 
 # Git command
 1. Top 20 git commands: https://medium.com/edureka/git-commands-with-example-7c5a555d14c

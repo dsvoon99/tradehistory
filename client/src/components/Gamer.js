@@ -25,11 +25,11 @@ const Gamer = () => {
     const stocksArray = [
         {
             "name": "S&P 500",
-            "code": "SPDR500"
+            "code": "SPY"
         }, 
         {
             "name": "Apple Inc",
-            "code": "APPL"
+            "code": "AAPL"
         },
         {
             "name": "Tesla Inc",
@@ -51,9 +51,11 @@ const Gamer = () => {
 
     const [dataSeries, setDataSeries] = useState([])
 
+    const [displayStart, setDisplayStart] = useState(true)
+
     const [buySellLevel, setBuySellLevel] = useState([])
 
-    const [ticker, setTicker] = useState("AAPL")
+    const [ticker, setTicker] = useState("SPY")
 
     const [cash, setCash] = useState(1000)
 
@@ -66,6 +68,10 @@ const Gamer = () => {
     var gameState = "Stop"
 
     const ref = useRef();
+
+    const startButtonRef = useRef();
+
+    const stopButtonRef = useRef();
 
     var newX, newY;
 
@@ -84,6 +90,14 @@ const Gamer = () => {
 
         // Target the svg in the Dom
         const svg = d3.select(domSVG)
+
+        svg.selectAll("*").remove();
+
+        var xAxis = svg.append("g")
+        xAxis.attr("class", "x-axis")
+
+        var yAxis = svg.append("g")
+        yAxis.attr("class", "y-axis")
 
         // Set the margin that will be used to position the x-axis and y-axis
         height = 600;
@@ -120,8 +134,7 @@ const Gamer = () => {
 
         // define axis generator to create the actual x-axis 
         let xAxisGenerator = d3.axisBottom(x)
-        xAxisGenerator.tickFormat(d3.timeFormat("%b"))
-        xAxisGenerator.ticks(30)
+        xAxisGenerator.tickFormat(d3.timeFormat("%b %Y"))
 
         // define axis generator to create the actual y-axis 
         let yAxisGenerator = d3.axisLeft(y)
@@ -180,6 +193,8 @@ const Gamer = () => {
 
             gameState = "Start"
 
+            setDisplayStart(false)
+
             // programmatically trigger zoom event (can be done either by translateBy, scaleBy etc)
             // zoom.translateBy(chartBody.select("rect"), -1, 0, [30, height - 10]);
         });
@@ -192,9 +207,16 @@ const Gamer = () => {
             // programmatically trigger zoom event (can be done either by translateBy, scaleBy etc)
             //zoom.translateBy(chartBody.select("rect"), 1, 0, [30, height - 10]);
             //zoom.scaleBy(chartBody.select("rect"), 0, [0, height]);
+
+            console.log(interval)
+
             clearInterval(interval);
 
             gameState = "Stop"
+
+            console.log(gameState)
+
+            setDisplayStart(true)
         });
 
         buy.on("click", function() {
@@ -205,13 +227,10 @@ const Gamer = () => {
             // programmatically trigger zoom event (can be done either by translateBy, scaleBy etc)
             zoom.translateBy(chartBody.select("rect"), 1, 0, [30, height - 10]);
 
-            // rescale x axis
-
-            // plot/udpate the graphs
         });
 
         document.addEventListener("keydown", function(event) {
-            if(gameState == "Start") {
+            if(gameState === "Start") {
                 if (event.keyCode == 13) {
                     trading = "Sell"
                     setCash(cash => cash + dataSeries[endI]["close"])
@@ -226,9 +245,9 @@ const Gamer = () => {
                     setBuySellLevel(buySellLevel => buySellPoints)
                 }
             } else {
-                alert("Start the game first!")
+                // alert("Start the game first!")
             }
-        }, false);
+        });
 
         chartBody.append("g")
         .attr("class", "circle-plot")
@@ -260,8 +279,6 @@ const Gamer = () => {
                 // Zoom event has x, y and k (relationship: Xn = X(0,0) + kX; Yn = Y(0,0) + kY)
                 newX = d3.zoomTransform(node)
 
-                console.log(newX)
-
                 // Set the y of zoom event to 0 because we only want x-direction to move, leaving y-direction unaffected
                 // zoom event by default will adjust the graph in x-direction and y-direction when using rescaleX and rescaleY
                 // Remember zooming is basically as moving the plot area either horizontally or vertically or both
@@ -271,8 +288,6 @@ const Gamer = () => {
                 startI = dataSeries.length - 1 - Math.floor(((newX.x) / -29000) * dataSeries.length)
                 endI = Math.floor(startI - (-(width)/ -29000) * dataSeries.length)
                 midI = Math.floor((startI + endI) / 2)
-
-                console.log(startI, endI, midI, dataSeries.length)
 
                 // clear interval
                 if(endI < 0) {
@@ -363,15 +378,19 @@ const Gamer = () => {
         renderChart(ref.current)
     }, [dataSeries])
 
+    useEffect(() => {
+        handleTickerSubmit()
+    }, [ticker])
+
     return (
         <div id="game-wrapper" className="body-pd">
-            <OwlCarousel className='owl-theme' loop margin={10} items={5} 
-            autoplay={true} dots={false} autoplayTimeout={3000}>
+            <OwlCarousel className='owl-theme' loop={false} rewind={true} margin={10} items={4} 
+            autoplay={true} dots={false} autoplayTimeout={3000} >
                 {
                     
                     stocksArray.map(function(item) {
                         return (
-                                <div className="stocks-card d-flex flex-row align-items-center">
+                                <div onClick={() => setTicker(item.code)} className="stocks-card d-flex flex-row align-items-center">
                                     <div className="stocks-card-logo">
                                         <img src={`/icons/${item.code}.png`} className="stocks-card-logo-image"/>
                                     </div>
@@ -402,10 +421,7 @@ const Gamer = () => {
 
                 }    
             </OwlCarousel>
-            <div>
-                <label>Ticker: </label>
-                <input value={ticker} onChange={event => setTicker(event.target.value)}/>
-                <button onClick={handleTickerSubmit}>Submit</button>
+            <div className="py-4">
             </div>
             <div>
                 <div className="row">
@@ -417,31 +433,23 @@ const Gamer = () => {
                         </svg>
                     </div>
                     <div className="col-4">
-                        <button id="start-game">Start Game</button>
-                        <button id="review-game">Stop Game</button>
-                        <p>{noOfStocks}</p>
+                        <button className={displayStart ? "display-show" : "display-hide"} id="start-game">Start Game</button>
+                        <button className={displayStart ? "display-hide" : "display-show"} id="review-game">Stop Game</button>
                         <div>
                             <p> {period} </p>
-                            <p> TWRR : { Math.round(((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 * 100) / 100  } %</p>
-                            Asset { marketValue * noOfStocks + cash }
-                            <p> stock { marketValue * noOfStocks } </p>
-                            <p> cash { cash } </p>
-                            Liabilities/Equities 1000
-                        </div>  
-                        <div>
-                            Transaction record
-                        </div>  
-                        <div>
-                            {
-                                buySellLevel.map(function(sample) {
-                                    return (
-                                        <div >
-                                            {sample.close}
-                                        </div>
-                                    )
-                                })
-                            }
                         </div>
+                        <div>
+                            No. of {ticker} stock holdings: {noOfStocks}
+                        </div>
+                        <div>
+                            <p> TWRR : { Math.round(((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 * 100) / 100  } %</p>
+                            <p>
+                                MV of stocks
+                            </p>
+                            {/* <p> stock { marketValue * noOfStocks } </p> */}
+                            <p> cash { cash } </p>
+                            Total Asset { marketValue * noOfStocks + cash }
+                        </div> 
                         <div>
                             Instructions
                         </div>

@@ -49,6 +49,21 @@ const Gamer = () => {
         }
     ]
 
+    const messages = [
+        {
+            "status": "start",
+            
+        },
+        {
+            "status": "alert",
+            "message": "You don't have enough stocks to sell."
+        },
+        {
+            "status": "warning",
+            "message": "Spice it up, you are approaching the end!"
+        }
+    ]
+
     const [dataSeries, setDataSeries] = useState([])
 
     const [displayStart, setDisplayStart] = useState(true)
@@ -234,9 +249,13 @@ const Gamer = () => {
                 if (event.keyCode == 13) {
                     trading = "Sell"
                     setCash(cash => cash + dataSeries[endI]["close"])
-                    setNoOfStocks(noOfStocks => noOfStocks - 1)
-                    buySellPoints.push({ "type": "sell", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
-                    setBuySellLevel(buySellLevel => buySellPoints)
+                    if(noOfStocks == 0) {
+
+                    } else {
+                        setNoOfStocks(noOfStocks => noOfStocks - 1)
+                        buySellPoints.push({ "type": "sell", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
+                        setBuySellLevel(buySellLevel => buySellPoints)
+                    }
                 } else if(event.keyCode == 32) {
                     trading = "Buy"
                     setCash(cash => cash - dataSeries[endI]["close"])

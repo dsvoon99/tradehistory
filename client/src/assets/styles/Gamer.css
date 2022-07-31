@@ -44,3 +44,12 @@
     width: 100%;
     border-radius: 50%;
 }
+
+.performance-card {
+    width: 70%;
+    height: 60px;
+    margin: 10px 0px;
+    padding: 5px;
+
+    /* #028cef, #34ba84, #9d67fd */
+}

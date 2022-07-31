@@ -51,10 +51,6 @@ const Gamer = () => {
 
     const messages = [
         {
-            "status": "start",
-            
-        },
-        {
             "status": "alert",
             "message": "You don't have enough stocks to sell."
         },
@@ -249,13 +245,9 @@ const Gamer = () => {
                 if (event.keyCode == 13) {
                     trading = "Sell"
                     setCash(cash => cash + dataSeries[endI]["close"])
-                    if(noOfStocks == 0) {
-
-                    } else {
-                        setNoOfStocks(noOfStocks => noOfStocks - 1)
-                        buySellPoints.push({ "type": "sell", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
-                        setBuySellLevel(buySellLevel => buySellPoints)
-                    }
+                    setNoOfStocks(noOfStocks => noOfStocks - 1)
+                    buySellPoints.push({ "type": "sell", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
+                    setBuySellLevel(buySellLevel => buySellPoints)
                 } else if(event.keyCode == 32) {
                     trading = "Buy"
                     setCash(cash => cash - dataSeries[endI]["close"])
@@ -457,22 +449,68 @@ const Gamer = () => {
                         <div>
                             <p> {period} </p>
                         </div>
-                        <div className="no-of-stocks-card">
-                            No. of {ticker} stock holdings: {noOfStocks}
+                        <div>
+                            <div className="performance-card d-flex twrr-card">
+                                <div>
+                                    <p>
+                                        Time weighted rate of return
+                                    </p>
+                                    <p>
+                                        { Math.round(((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 * 100) / 100  } %
+                                    </p>
+                                </div>
+                                <div>
+                                    Icon
+                                </div>
+                            </div>
+                            <div className="performance-card d-flex profits-card">
+                                <div>
+                                    <p>
+                                        Total Profits
+                                    </p>
+                                    <p>
+                                        { Math.round(((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 * 100) / 100  } %
+                                    </p>
+                                </div>
+                                <div>
+                                    Icon
+                                </div>
+                            </div>
+                            <div className="performance-card d-flex holdings-card">
+                                <div>
+                                    <p>
+                                    No. of {ticker} stock holdings
+                                    </p>
+                                    <p>
+                                        {noOfStocks}    
+                                     </p>
+                                </div>
+                                <div>
+                                    Icon
+                                </div>
+                            </div>
+                            {/* <div className="performance-card d-flex">
+                                <div>
+                                    <p>
+                                    Current ranking
+                                    </p>
+                                    <p>
+                                        {noOfStocks}    
+                                     </p>
+                                </div>
+                                <div>
+                                    Icon
+                                </div>
+                            </div> */}
                         </div>
-                        <div className="twrr-card">
-                            <p> TWRR : { Math.round(((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 * 100) / 100  } %</p>
-                        </div>
-                        <div className="performance-graphs-card">
-                            <p>
-                                MV of stocks
-                            </p>
-                            {/* <p> stock { marketValue * noOfStocks } </p> */}
-                            <p> cash { cash } </p>
-                            Total Asset { marketValue * noOfStocks + cash }
-                        </div> 
                         <div className="instructions-card">
                             Instructions
+                            <div>
+                                Click "Start Game" to play
+                            </div>
+                            <div>
+                                Click "Stop Game" to pause
+                            </div>
                         </div>
                     </div>
                 </div>

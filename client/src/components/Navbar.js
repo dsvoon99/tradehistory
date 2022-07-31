@@ -14,8 +14,9 @@ const Navbar = () => {
     useEffect(function() {
         window.addEventListener("scroll", function(event) {
             var st = window.pageYOffset // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
-            // console.log(window.pageYOffset)
-            if (st > lastScrollTop){
+            if (st == 0) {
+                ref.current.style.top = "0"
+            } else if (st > lastScrollTop){
                 ref.current.style.top = "-100px"
             } else if(st < lastScrollTop) {
                 ref.current.style.top = "0"

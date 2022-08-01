@@ -112,7 +112,7 @@ const Gamer = () => {
 
         // Set the margin that will be used to position the x-axis and y-axis
         height = 600;
-        width = 1000;
+        width = 800;
         margin = { top: 20, right: 30, bottom: 30, left: 40 };
     
         // Define the characteristic/feature of axis x
@@ -436,14 +436,14 @@ const Gamer = () => {
             </div>
             <div>
                 <div className="row">
-                    <div className="col-8">
+                    <div className="col-9">
                         <svg ref={ref}>
                             <g></g>
                             <g className="x-axis"></g>
                             <g className="y-axis"></g>
                         </svg>
                     </div>
-                    <div className="col-4">
+                    <div className="col-3">
                         <button className={displayStart ? "display-show" : "display-hide"} id="start-game">Start Game</button>
                         <button className={displayStart ? "display-hide" : "display-show"} id="review-game">Stop Game</button>
                         <div>
@@ -453,27 +453,27 @@ const Gamer = () => {
                             <div className="performance-card d-flex twrr-card">
                                 <div>
                                     <p>
-                                        Time weighted rate of return
+                                        Total Return (%)
                                     </p>
                                     <p>
                                         { Math.round(((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 * 100) / 100  } %
                                     </p>
                                 </div>
                                 <div>
-                                    Icon
+                                    <span class="material-icons">chevron_right</span>
                                 </div>
                             </div>
                             <div className="performance-card d-flex profits-card">
                                 <div>
                                     <p>
-                                        Total Profits
+                                        Total Profits ($)
                                     </p>
                                     <p>
                                         { Math.round(((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 * 100) / 100  } %
                                     </p>
                                 </div>
                                 <div>
-                                    Icon
+                                    <span class="material-icons">chevron_right</span>
                                 </div>
                             </div>
                             <div className="performance-card d-flex holdings-card">
@@ -486,7 +486,7 @@ const Gamer = () => {
                                      </p>
                                 </div>
                                 <div>
-                                    Icon
+                                    <span class="material-icons">chevron_right</span>
                                 </div>
                             </div>
                             {/* <div className="performance-card d-flex">
@@ -504,12 +504,22 @@ const Gamer = () => {
                             </div> */}
                         </div>
                         <div className="instructions-card">
-                            Instructions
-                            <div>
-                                Click "Start Game" to play
+                            <div className="d-flex">
+                                <label className="bold">
+                                    Instructions
+                                </label>
+                                <label>
+                                    <span class="material-icons">chevron_right</span>
+                                </label>
                             </div>
-                            <div>
-                                Click "Stop Game" to pause
+                            <div className="instruction">
+                                1. Click "Start Game" to play.
+                            </div>
+                            <div className="instruction">
+                                2. Click "Space" to buy and "Enter" to sell.
+                            </div>
+                            <div className="instruction">
+                                3. Play until the end and see how much you made!
                             </div>
                         </div>
                     </div>

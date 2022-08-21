@@ -23,9 +23,9 @@ const App = () => {
         <section id='Home'>
           <GamerLandingPage />
         </section>
-        <section id='About'>
+        {/* <section id='About'>
           <About/>
-        </section>
+        </section> */}
         <section id='Game'>
           <Gamer/>
         </section>

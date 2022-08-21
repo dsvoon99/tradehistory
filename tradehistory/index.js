@@ -10,13 +10,13 @@ const RedisStore = connectRedis(session);
 var userControllers = require("./config/controllers/UserControllers")
 var backtesterControllers = require("./config/controllers/BacktesterControllers")
 
-const db = require('./config/db');
+// const db = require('./config/db');
 
-db.authenticate().then(() => {
-  console.log('Database connected...');
-}).catch(err => {
-  console.log('Error: ' + err);
-})
+// db.authenticate().then(() => {
+//   console.log('Database connected...');
+// }).catch(err => {
+//   console.log('Error: ' + err);
+// })
 
 const { createClient } = require('redis')
 const redisClient = createClient({
@@ -71,6 +71,8 @@ app.post("/logout", (req, res) => {
   
 const PORT = process.env.PORT || 8080;
   
-db.sync().then(() => {
-  app.listen(PORT, console.log(`Server started on port ${PORT}`));
-}).catch(err => console.log("Error: " + err));
+// db.sync().then(() => {
+//   app.listen(PORT, console.log(`Server started on port ${PORT}`));
+// }).catch(err => console.log("Error: " + err));
+
+app.listen(PORT, console.log(`Server started on port ${PORT}`));

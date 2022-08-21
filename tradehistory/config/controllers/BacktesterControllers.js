@@ -4,6 +4,8 @@ const getChart =  (req, res) => {
 
     const { ticker } = req.body
 
+    console.log(req.body)
+
     yahooFinance.historical({
         symbol: ticker,
         from: '2010-01-01',

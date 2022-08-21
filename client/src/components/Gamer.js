@@ -194,7 +194,9 @@ const Gamer = () => {
         let totalLength = path.node().getTotalLength();
 
 
-        startGame.on("click", function() {
+        startGame.on("click", function(e) {
+
+            console.log("Hi")
 
             //Set interval to move axis to the right
             interval = setInterval(function(){
@@ -225,8 +227,6 @@ const Gamer = () => {
 
             gameState = "Stop"
 
-            console.log(gameState)
-
             setDisplayStart(true)
         });
 
@@ -236,7 +236,7 @@ const Gamer = () => {
             //     zoom.translateTo(chartBody.select("rect"), 30, 0, [30, height - 10]);
             // }, 1000)
             // programmatically trigger zoom event (can be done either by translateBy, scaleBy etc)
-            zoom.translateBy(chartBody.select("rect"), 1, 0, [30, height - 10]);
+            // zoom.translateBy(chartBody.select("rect"), 1, 0, [30, height - 10]);
 
         });
 
@@ -296,9 +296,13 @@ const Gamer = () => {
                 newX.y = 0
 
                 // Calculate range of y-axis domain
-                startI = dataSeries.length - 1 - Math.floor(((newX.x) / -29000) * dataSeries.length)
-                endI = Math.floor(startI - (-(width)/ -29000) * dataSeries.length)
+                startI = dataSeries.length - 1 - Math.floor(((newX.x) / -23200) * dataSeries.length)
+                endI = Math.floor(startI - (-(width)/ -23200) * dataSeries.length)
                 midI = Math.floor((startI + endI) / 2)
+
+                // console.log("Start",dataSeries[startI]["close"]) 
+                // console.log("End", dataSeries[endI]["close"])
+                console.log(startI - endI)
 
                 // clear interval
                 if(endI < 0) {

@@ -5,6 +5,22 @@ import '../assets/styles/Gamer.css';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+import { InfinitySpin } from  'react-loader-spinner'
+import Modal from 'react-modal';
+import { PerformanceCard } from "./PerformanceCard";
+
+Modal.setAppElement('#root');
+
+const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  };
 
 const Gamer = () => {
 
@@ -48,19 +64,10 @@ const Gamer = () => {
             "code": "WMT"
         }
     ]
-
-    const messages = [
-        {
-            "status": "alert",
-            "message": "You don't have enough stocks to sell."
-        },
-        {
-            "status": "warning",
-            "message": "Spice it up, you are approaching the end!"
-        }
-    ]
-
+    
     const [dataSeries, setDataSeries] = useState([])
+
+    const [modalIsOpen, setIsOpen] = useState(false);
 
     const [displayStart, setDisplayStart] = useState(true)
 
@@ -94,6 +101,15 @@ const Gamer = () => {
     let sell = d3.select("#sell");
     let trading = "";
 
+    // Calc average given an array of numbers
+    function average(arr) {
+        let sum = 0
+        for(let i = 0; i< arr.length; i++) {
+            sum += arr[i]
+        }
+        return sum / arr.length
+    }
+    
     const renderChart = async (domSVG) => {
 
         let zoom, chartBody, height, width, margin, interval;
@@ -102,20 +118,23 @@ const Gamer = () => {
         // Target the svg in the Dom
         const svg = d3.select(domSVG)
 
+        // Clean the canvas first
         svg.selectAll("*").remove();
 
+        // Append g to be used as x axis
         var xAxis = svg.append("g")
         xAxis.attr("class", "x-axis")
 
+        // Append another g to be used as y-axis
         var yAxis = svg.append("g")
         yAxis.attr("class", "y-axis")
 
         // Set the margin that will be used to position the x-axis and y-axis
         height = 600;
-        width = 800;
+        width = window.innerWidth / 1.8;
         margin = { top: 20, right: 30, bottom: 30, left: 40 };
     
-        // Define the characteristic/feature of axis x
+        // Define the characteristic/feature of axis x (domain, width & position)
         var x = d3.scaleTime()
         .domain(d3.extent(dataSeries, function(d) { return d.date; }))
         .range([ 0, width - margin.right])
@@ -123,7 +142,7 @@ const Gamer = () => {
         const offsetX = height - margin.bottom
         const offsetY = 0 - margin.bottom - 10
 
-        // efine the characteristic/feature of axis y
+        // Define the characteristic/feature of axis y (domain, height & position)
         var maxDomain = dataSeries.hasMax("close")["close"]
         var y = d3.scaleLinear()
         .domain( [0, Math.ceil(maxDomain / 100) * 100])
@@ -139,7 +158,7 @@ const Gamer = () => {
         .attr("width", width)
         .attr("height", height - margin.bottom);
         
-        // Append svg element with the svg clipath created above as booundary
+        // Append svg element with the svg clipath created above as boundary
         chartBody = svg.append("g")
         .attr("clip-path", "url(#clip)")
 
@@ -161,8 +180,8 @@ const Gamer = () => {
 
         // Define zooming characteristics
         zoom = d3.zoom()
-        .scaleExtent([1, 30])  // This control how much you can unzoom (x0.5) and zoom (x20)
-        .translateExtent([[0, 0], [width, height]])
+        .scaleExtent([1, 30])  // This control how much you can unzoom (x0.5) and zoom (x30)
+        .translateExtent([[0, 0], [width, height]]) // This control how much you can move the x-axis and y-axis.
         // Once attached(called) on svg, whenever there is a wheeling/scrolling/dblclick/programmaticalled triggered event (like scaleby, translateBy etc), draw() will be called
         .on("zoom", draw)
 
@@ -174,8 +193,8 @@ const Gamer = () => {
         .style("pointer-events", "all")
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
         .call(zoom)
-        .on("wheel.zoom", null)
-        .on("dblclick.zoom", null);
+        .on("wheel.zoom", null) // Disable zoom due to wheeling
+        .on("dblclick.zoom", null); // Disable zoom due to dbl click
 
         // Append the path line with data
         var path = chartBody.append("path")
@@ -193,10 +212,7 @@ const Gamer = () => {
         // Get total no. of points on the line
         let totalLength = path.node().getTotalLength();
 
-
         startGame.on("click", function(e) {
-
-            console.log("Hi")
 
             //Set interval to move axis to the right
             interval = setInterval(function(){
@@ -205,63 +221,54 @@ const Gamer = () => {
             }, 100)
 
             gameState = "Start"
-
             setDisplayStart(false)
-
             // programmatically trigger zoom event (can be done either by translateBy, scaleBy etc)
             // zoom.translateBy(chartBody.select("rect"), -1, 0, [30, height - 10]);
         });
 
         reviewGame.on("click", function() {
-            //Set interval to move axis to the right
-            // this.setInterval(() => {
-            //     zoom.translateTo(chartBody.select("rect"), 30, 0, [30, height - 10]);
-            // }, 1000)
-            // programmatically trigger zoom event (can be done either by translateBy, scaleBy etc)
-            //zoom.translateBy(chartBody.select("rect"), 1, 0, [30, height - 10]);
-            //zoom.scaleBy(chartBody.select("rect"), 0, [0, height]);
-
-            console.log(interval)
-
             clearInterval(interval);
-
             gameState = "Stop"
-
             setDisplayStart(true)
         });
 
-        buy.on("click", function() {
-            //Set interval to move axis to the right
-            // this.setInterval(() => {
-            //     zoom.translateTo(chartBody.select("rect"), 30, 0, [30, height - 10]);
-            // }, 1000)
-            // programmatically trigger zoom event (can be done either by translateBy, scaleBy etc)
-            // zoom.translateBy(chartBody.select("rect"), 1, 0, [30, height - 10]);
-
-        });
-
+        // Detect keydown event
         document.addEventListener("keydown", function(event) {
             if(gameState === "Start") {
                 if (event.keyCode == 13) {
                     trading = "Sell"
-                    setCash(cash => cash + dataSeries[endI]["close"])
-                    setNoOfStocks(noOfStocks => noOfStocks - 1)
-                    buySellPoints.push({ "type": "sell", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
-                    setBuySellLevel(buySellLevel => buySellPoints)
+                    setNoOfStocks(noOfStocks => {
+                        if((noOfStocks - 1) >= 0) {
+                            setCash(cash => cash + dataSeries[endI]["close"])
+                            buySellPoints.push({ "type": "sell", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
+                            setBuySellLevel(buySellLevel => buySellPoints)
+                            return noOfStocks - 1
+                        } else {
+                            alert("You don't have enough stocks to sell.")
+                            return noOfStocks
+                        }
+                    })
+                    
                 } else if(event.keyCode == 32) {
                     trading = "Buy"
-                    setCash(cash => cash - dataSeries[endI]["close"])
-                    setNoOfStocks(noOfStocks => noOfStocks + 1)
-                    buySellPoints.push({ "type": "buy", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
-                    setBuySellLevel(buySellLevel => buySellPoints)
+                    setCash(cash => {
+                        if((cash - dataSeries[endI]["close"]) >= 0 ) {
+                            setNoOfStocks(noOfStocks => noOfStocks + 1)
+                            buySellPoints.push({ "type": "buy", "close": dataSeries[endI]["close"], "date": dataSeries[endI]["date"]})
+                            setBuySellLevel(buySellLevel => buySellPoints)
+                            return cash - dataSeries[endI]["close"]
+                        } else {
+                            alert("You don't have enough cash to buy.")
+                            return cash
+                        }
+                    })
+                    
                 }
             } else {
-                // alert("Start the game first!")
+                alert("Start the game first!")
             }
         });
 
-        chartBody.append("g")
-        .attr("class", "circle-plot")
 
         // Set the line animation effect
         // path
@@ -271,16 +278,11 @@ const Gamer = () => {
         // .duration(5000) // Set Duration timing (ms)
         // .ease(d3.easeLinear) // Set Easing option
         // .attr("stroke-dashoffset", totalLength * 2)
-        
-        // Calc average given an array of numbers
-        function average(arr) {
-            let sum = 0
-            for(let i = 0; i< arr.length; i++) {
-                sum += arr[i]
-            }
-            return sum / arr.length
-        }
 
+        // Create the g element to hold buy/sell entry points
+        chartBody.append("g")
+        .attr("class", "circle-plot")
+    
         // zoom function handler
         function draw() {
 
@@ -300,17 +302,13 @@ const Gamer = () => {
                 endI = Math.floor(startI - (-(width)/ -23200) * dataSeries.length)
                 midI = Math.floor((startI + endI) / 2)
 
-                // console.log("Start",dataSeries[startI]["close"]) 
-                // console.log("End", dataSeries[endI]["close"])
-                console.log(startI - endI)
-
-                // clear interval
+                // if reach the end of data, clear interval to stop the game
                 if(endI < 0) {
                     clearInterval(interval)
                     return;
                 }
                 
-                // Reassign y-axis based on new domain
+                // Else, re-calculate the domain of y-axis 
                 y = d3.scaleLinear()
                 .domain([
                     average([Math.ceil(dataSeries[midI]["close"]), Math.ceil(dataSeries[startI]["close"]), 
@@ -341,9 +339,10 @@ const Gamer = () => {
                     .y(function(d) { return y(d.close)})
                     ) 
 
-                // update buy sell points
+                // clear all previous buy sell points
                 chartBody.select(".circle-plot").selectAll("*").remove();
 
+                // update buy sell points
                 chartBody.select(".circle-plot")
                 .selectAll(".line")
                 .data(buySellPoints)
@@ -365,12 +364,14 @@ const Gamer = () => {
         svg.attr("width", width)
         svg.attr("height", height)
 
-        // Zoom in the graph to the max after loading the data
+        // Zoom in the graph to the max after loading the initial data
         zoom.scaleBy(chartBody.select("rect"), 30, [0, height]);
 
     }
 
+    // Handler function when you select a new ticker
     const handleTickerSubmit = () => {
+        setIsOpen(modalIsOpen => true)
         axios.post(`${process.env.REACT_APP_API_URL}ticker`, {
             "ticker": ticker,
         })
@@ -380,12 +381,13 @@ const Gamer = () => {
                     return {"date": new Date(sample.date), "close": sample.close, "ticker": sample.symbol, "volume": sample.volume}
                 }))
             }
+            setIsOpen(modalIsOpen => false)
         })
         .catch(error => {
             alert("Invalid ticker!")
+            setIsOpen(modalIsOpen => false)
         })
     }
-
 
     // get latest data
     // Additional function after re-rendering put here
@@ -454,58 +456,22 @@ const Gamer = () => {
                             <p> {period} </p>
                         </div>
                         <div>
-                            <div className="performance-card d-flex twrr-card">
-                                <div>
-                                    <p>
-                                        Total Return (%)
-                                    </p>
-                                    <p>
-                                        { Math.round(((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 * 100) / 100  } %
-                                    </p>
-                                </div>
-                                <div>
-                                    <span class="material-icons">chevron_right</span>
-                                </div>
-                            </div>
-                            <div className="performance-card d-flex profits-card">
-                                <div>
-                                    <p>
-                                        Total Profits ($)
-                                    </p>
-                                    <p>
-                                        { Math.round(((marketValue * noOfStocks + cash - 1000) / 1000 ) * 100 * 100) / 100  } %
-                                    </p>
-                                </div>
-                                <div>
-                                    <span class="material-icons">chevron_right</span>
-                                </div>
-                            </div>
-                            <div className="performance-card d-flex holdings-card">
-                                <div>
-                                    <p>
-                                    No. of {ticker} stock holdings
-                                    </p>
-                                    <p>
-                                        {noOfStocks}    
-                                     </p>
-                                </div>
-                                <div>
-                                    <span class="material-icons">chevron_right</span>
-                                </div>
-                            </div>
-                            {/* <div className="performance-card d-flex">
-                                <div>
-                                    <p>
-                                    Current ranking
-                                    </p>
-                                    <p>
-                                        {noOfStocks}    
-                                     </p>
-                                </div>
-                                <div>
-                                    Icon
-                                </div>
-                            </div> */}
+                            <PerformanceCard 
+                                key="Total Profit ($)"
+                                value={ Math.round(((marketValue * noOfStocks + cash - 1000) * 100 * 100))/ 10000  }
+                            />
+                            <PerformanceCard 
+                                key="Cash ($)"
+                                value={ Math.round(((cash ) * 100 * 100))/ 10000  }
+                            />
+                            <PerformanceCard 
+                                key="Net worth ($)"
+                                value={ Math.round(((marketValue * noOfStocks + cash ) * 100 * 100))/ 10000  }
+                            />
+                            <PerformanceCard 
+                                key={`No. of ${ticker} stock holdings`}
+                                value={noOfStocks}  
+                            />
                         </div>
                         <div className="instructions-card">
                             <div className="d-flex">
@@ -529,6 +495,16 @@ const Gamer = () => {
                     </div>
                 </div>
             </div>
+            <Modal
+            isOpen={modalIsOpen}
+            style={customStyles}
+            preventScroll={true}
+            >
+                <InfinitySpin 
+                width='200'
+                color="#4fa94d"
+                />
+            </Modal>
         </div>
     )
 }

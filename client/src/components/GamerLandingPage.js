@@ -31,7 +31,7 @@ const GamerLandingPage = () => {
                         Sell High
                     </div>
                     <div className='col-10 landing-p pt-2 pb-2'>
-                        Put your stocks trading skills to test.Spice up your trading instinct with trading game by Tradeor. Test your skills/luck trading on SPX500, APPL, TSLA and many more.
+                        Put your stocks trading skills to test. Test your skills trading on SPX500, APPL, TSLA and many more.
                     </div>
                     <div className="row">
                         <div className="col-6 pt-4">

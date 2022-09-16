@@ -30,7 +30,7 @@ const Navbar = () => {
         <nav className="nav-bar px-5 d-flex flex-row" ref={ref}>
             <div className="col-6 d-flex flex-row align-items-center justify-content-start">
                 <label className="nav-logo">
-                        Logo
+                        Trading Game
                 </label>
             </div>
             <ul className="col-6 li-style-none d-flex flex-row align-items-center justify-content-end">
@@ -42,14 +42,14 @@ const Navbar = () => {
                             Home
                     </Link>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                     <Link
                     to="About"
                     activeClass="active"
                     smooth={true}>
                         About
                     </Link>
-                </li>
+                </li> */}
                 <li className="nav-item">
                     <Link
                         to="Game"

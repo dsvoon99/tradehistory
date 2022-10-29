@@ -1,6 +1,7 @@
 .App {
     background: #ffffff;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .body-pd {

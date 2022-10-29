@@ -1,11 +1,9 @@
 import LoginForm from './components/LoginForm';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import RegisterForm from './components/RegisterForm';
-import Backtester from './components/Backtester';
 import Gamer from './components/Gamer';
 import GamerLandingPage from './components/GamerLandingPage';
 import Navbar from './components/Navbar';
-import About from './components/About';
 import "./assets/styles/App.css"
 
 const App = () => {
@@ -27,7 +25,7 @@ const App = () => {
           <About/>
         </section> */}
         <section id='Game'>
-          <Gamer/>
+          <Gamer ref={(Gamer) => {window.Gamer = Gamer}}/>
         </section>
       </div>
     </div>

@@ -95,6 +95,14 @@ const Gamer = () => {
 
     var buySellPoints = [];
 
+    const stateRef = useRef();
+
+    stateRef.current = {
+        "marketValue": marketValue,
+        "noOfStocks": noOfStocks,
+        "cash": cash
+    };
+
     let startGame = d3.select("#start-game");
     let reviewGame = d3.select("#review-game");
     let buy = d3.select("#buy");
@@ -131,7 +139,7 @@ const Gamer = () => {
 
         // Set the margin that will be used to position the x-axis and y-axis
         height = 600;
-        width = window.innerWidth / 1.8;
+        width = 800
         margin = { top: 20, right: 30, bottom: 30, left: 40 };
     
         // Define the characteristic/feature of axis x (domain, width & position)
@@ -302,9 +310,15 @@ const Gamer = () => {
                 endI = Math.floor(startI - (-(width)/ -23200) * dataSeries.length)
                 midI = Math.floor((startI + endI) / 2)
 
+                let mv, nS, ch;
                 // if reach the end of data, clear interval to stop the game
                 if(endI < 0) {
                     clearInterval(interval)
+                    alert("Game ended!")
+                    mv = stateRef.current["marketValue"]
+                    nS = stateRef.current["noOfStocks"]
+                    ch = stateRef.current["cash"]
+                    alert("You earned a profit of " + Math.round(((mv * nS + ch - 1000) * 100 * 100))/ 10000)
                     return;
                 }
                 
@@ -457,19 +471,19 @@ const Gamer = () => {
                         </div>
                         <div>
                             <PerformanceCard 
-                                key="Total Profit ($)"
+                                title="Total Profit ($)"
                                 value={ Math.round(((marketValue * noOfStocks + cash - 1000) * 100 * 100))/ 10000  }
                             />
                             <PerformanceCard 
-                                key="Cash ($)"
+                                title="Cash ($)"
                                 value={ Math.round(((cash ) * 100 * 100))/ 10000  }
                             />
                             <PerformanceCard 
-                                key="Net worth ($)"
+                                title="Net worth ($)"
                                 value={ Math.round(((marketValue * noOfStocks + cash ) * 100 * 100))/ 10000  }
                             />
                             <PerformanceCard 
-                                key={`No. of ${ticker} stock holdings`}
+                                title={`No. of ${ticker} stock holdings`}
                                 value={noOfStocks}  
                             />
                         </div>

@@ -1,16 +1,16 @@
 export const PerformanceCard = (props) => {
 
-    const { key, value } = props;
+    const { title, value } = props;
 
     return (
         <div className="performance-card d-flex twrr-card">
             <div>
-                <p>
-                    { key }
-                </p>
-                <p>
+                <div className="performance-card-title">
+                    { title }
+                </div>
+                <div className="fw-bold">
                     { value  }
-                </p>
+                </div>
             </div>
             <div>
                 <span class="material-icons">chevron_right</span>

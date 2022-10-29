@@ -48,6 +48,11 @@ https://medium.appbase.io/how-to-implement-authentication-for-your-react-app-cf0
 - Using useEffects as componentDidMount, DidUpdate, DidUnmount: https://reactjs.org/docs/hooks-effect.html
 - Re-run useeffect only if something changes: https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects
 
+# Function closure in react (Why cannot access state in a callback?)
+- https://stackoverflow.com/questions/57471987/function-inside-setinterval-does-not-recieve-updated-variables-from-hooks/57472149
+- https://www.linkedin.com/pulse/you-have-know-closures-good-react-developer-nitsan-cohen/
+- https://stackoverflow.com/questions/57847594/react-hooks-accessing-up-to-date-state-from-within-a-callback
+
 # Yarn vs Npm
 https://medium.com/@j.dumadag718/yarn-vs-npm-b2d58289fb9b
 
